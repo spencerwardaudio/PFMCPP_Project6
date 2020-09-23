@@ -72,8 +72,8 @@ struct ComparisonCalc                                //4
     {
         if(a != nullptr && b != nullptr)
         {
-        if( a->value < b->value ) return a;
-        if( a->value > b->value ) return b;
+            if( a->value < b->value ) return a;
+            if( a->value > b->value ) return b;
         }
         return nullptr;
     }
@@ -86,20 +86,20 @@ struct U
     {
         if(updateVal != nullptr)
         {
-        std::cout << "U's pop value: " << this->pop << std::endl;
-        this->pop = *updateVal;
-        std::cout << "U's pop updated value: " << this->pop << std::endl;
+            std::cout << "U's pop value: " << this->pop << std::endl;
+            this->pop = *updateVal;
+            std::cout << "U's pop updated value: " << this->pop << std::endl;
 
-        while( std::abs(this->pop - this->shift) > 0.001f )
-        {
-            /*
-            write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-            */
-            this->pop -= 1.0f;
-        }
-        
-        std::cout << "U's shift updated value: " << this->shift << std::endl;
-        return this->shift * this->pop;
+            while( std::abs(this->pop - this->shift) > 0.001f )
+            {
+                /*
+                write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+                */
+                this->pop -= 1.0f;
+            }
+            
+            std::cout << "U's shift updated value: " << this->shift << std::endl;
+            return this->shift * this->pop;
         }
         return 0;
     }
@@ -109,21 +109,22 @@ struct B
 {
     static float turn(U* that, float* updateVal )        //10
     {
-        if(that != nullptr && updateVal != nullptr){
-        std::cout << "U's pop value: " << that->pop << std::endl;
-        that->pop = *updateVal;
-        std::cout << "U's pop updated value: " << that->pop << std::endl;
-
-        while( std::abs(that->pop - that->shift) > 0.001f )
+        if(that != nullptr && updateVal != nullptr)
         {
-            /*
-            write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-            */
-            that->shift += ((that->pop) - (that->shift)) / 3 ;
-        }
+            std::cout << "U's pop value: " << that->pop << std::endl;
+            that->pop = *updateVal;
+            std::cout << "U's pop updated value: " << that->pop << std::endl;
 
-        std::cout << "U's shift updated value: " << that->shift << std::endl;
-        return that->shift * that->pop;
+            while( std::abs(that->pop - that->shift) > 0.001f )
+            {
+                /*
+                write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+                */
+                that->shift += ((that->pop) - (that->shift)) / 3 ;
+            }
+
+            std::cout << "U's shift updated value: " << that->shift << std::endl;
+            return that->shift * that->pop;
         }
         return 0;
     }
@@ -153,11 +154,11 @@ int main()
 
     if(smaller != nullptr)
     {
-    std::cout << "the smaller one is << " << smaller->title << std::endl; //9
+        std::cout << "the smaller one is << " << smaller->title << std::endl; //9
     }
     else 
     {
-    std::cout << bitPop.title << " and " << bitShift.title << " are equivalent << " << std::endl; //9
+        std::cout << bitPop.title << " and " << bitShift.title << " are equivalent << " << std::endl; //9
     }
 
     U name3;
