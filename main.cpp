@@ -56,46 +56,77 @@ Purpose:  This project will show you the difference between member functions and
 #include <string>
 struct T
 {
-    T(<#type name#> v, const char* <#variable name#>)   //1
-    //2
-    //3
+    T(int v, const char* c) :  //1
+    value(v),//2
+    title(c) //3
+    {
+
+    }
+    int value;
+    std::string title;
 };
 
-struct <#structName1#>                                //4
+struct ComparisonCalc                                //4
 {
-    <#type name#> compare(<#type name#> a, <#type name#> b) //5
+    T* compare(T* a, T* b) //5
     {
-        if( a->value < b->value ) return a;
-        if( a->value > b->value ) return b;
+        if(a != nullptr && b != nullptr)
+        {
+            if( a->value < b->value ) return a;
+            if( a->value > b->value ) return b;
+        }
         return nullptr;
     }
 };
 
 struct U
 {
-    float <#name1#> { 0 }, <#name2#> { 0 };
-    <#returnType#> <#memberFunction#>(<#type name#>* <#updatedValue#>)      //12
+    float pop { 3.1f }, shift { 1.0f };
+    float moving(float* updateVal)      //12
     {
-        
+        if(updateVal != nullptr)
+        {
+            std::cout << "U's pop value: " << this->pop << std::endl;
+            this->pop = *updateVal;
+            std::cout << "U's pop updated value: " << this->pop << std::endl;
+
+            while( std::abs(this->pop - this->shift) > 0.001f )
+            {
+                /*
+                write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+                */
+                this->pop -= 1.0f;
+            }
+            
+            std::cout << "U's shift updated value: " << this->shift << std::endl;
+            return this->shift * this->pop;
+        }
+        return 0;
     }
 };
 
-struct <#structname2#>
+struct B
 {
-    static <#returntype#> <#staticFunctionA#>(U* that, <#type name#>* <#updatedValue#> )        //10
+    static float turn(U* that, float* updateVal )        //10
     {
-        std::cout << "U's <#name1#> value: " << that-><#name1#> << std::endl;
-        that-><#name1#> = <#updatedValue#>;
-        std::cout << "U's <#name1#> updated value: " << that-><#name1#> << std::endl;
-        while( std::abs(that-><#name2#> - that-><#name1#>) > 0.001f )
+        if(that != nullptr && updateVal != nullptr)
         {
-            /*
-             write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-             */
-            that-><#name2#> += ;
+            std::cout << "U's pop value: " << that->pop << std::endl;
+            that->pop = *updateVal;
+            std::cout << "U's pop updated value: " << that->pop << std::endl;
+
+            while( std::abs(that->pop - that->shift) > 0.001f )
+            {
+                /*
+                write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+                */
+                that->shift += ((that->pop) - (that->shift)) / 3 ;
+            }
+
+            std::cout << "U's shift updated value: " << that->shift << std::endl;
+            return that->shift * that->pop;
         }
-        std::cout << "U's <#name2#> updated value: " << that-><#name2#> << std::endl;
-        return that-><#name2#> * that-><#name1#>;
+        return 0;
     }
 };
         
@@ -115,19 +146,27 @@ struct <#structname2#>
 
 int main()
 {
-    T <#name1#>( , );                                             //6
-    T <#name2#>( , );                                             //6
-    
-    <#structName1#> f;                                            //7
-    auto* smaller = f.compare( , );                              //8
-    std::cout << "the smaller one is << " << smaller->name << std::endl; //9
-    
-    U <#name3#>;
+    T bitPop( 3, "y");                                             //6
+    T bitShift( 2, "e");                                             //6
+
+    ComparisonCalc f;                                            //7
+    auto* smaller = f.compare( &bitPop, &bitShift);                              //8
+
+    if(smaller != nullptr)
+    {
+        std::cout << "the smaller one is << " << smaller->title << std::endl; //9
+    }
+    else 
+    {
+        std::cout << bitPop.title << " and " << bitShift.title << " are equivalent << " << std::endl; //9
+    }
+
+    U name3;
     float updatedValue = 5.f;
-    std::cout << "[static func] <#name3#>'s multiplied values: " << <#structname2#>::<#staticFunctionA#>( , ) << std::endl;                  //11
-    
-    U <#name4#>;
-    std::cout << "[member func] <#name4#>'s multiplied values: " << <#name4#>.<#memberFunction#>( &updatedValue ) << std::endl;
+    std::cout << "[static func] name3's multiplied values: " << B::turn(&name3, &updatedValue) << std::endl;                  //11
+
+    U name4;
+    std::cout << "[member func] name4's multiplied values: " << name4.moving( &updatedValue ) << std::endl;
 }
 
         
