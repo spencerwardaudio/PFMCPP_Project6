@@ -19,6 +19,7 @@ Create a branch named Part2
 
 #include <iostream>
 #include <string>
+
 struct T
 {
     T(int v, const char* c) :  //1
@@ -33,13 +34,10 @@ struct T
 
 struct ComparisonCalc                                //4
 {
-    T* compare(T* a, T* b) //5
+    T* compare(T& a, T& b) //5
     {
-        if(a != nullptr && b != nullptr)
-        {
-            if( a->value < b->value ) return a;
-            if( a->value > b->value ) return b;
-        }
+        if( a.value < b.value ) return &a;
+        if( a.value > b.value ) return &b;
         return nullptr;
     }
 };
@@ -47,51 +45,43 @@ struct ComparisonCalc                                //4
 struct U
 {
     float pop { 3.1f }, shift { 1.0f };
-    float moving(float* updateVal)      //12
+    float moving(float& updateVal)      //12
     {
-        if(updateVal != nullptr)
-        {
-            std::cout << "U's pop value: " << this->pop << std::endl;
-            this->pop = *updateVal;
-            std::cout << "U's pop updated value: " << this->pop << std::endl;
+        std::cout << "U's pop value: " << this->pop << std::endl;
+        this->pop = updateVal;
+        std::cout << "U's pop updated value: " << this->pop << std::endl;
 
-            while( std::abs(this->pop - this->shift) > 0.001f )
-            {
-                /*
-                write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-                */
-                this->pop -= 1.0f;
-            }
-            
-            std::cout << "U's shift updated value: " << this->shift << std::endl;
-            return this->shift * this->pop;
+        while( std::abs(this->pop - this->shift) > 0.001f )
+        {
+            /*
+            write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+            */
+            this->pop -= 1.0f;
         }
-        return 0;
+        
+        std::cout << "U's shift updated value: " << this->shift << std::endl;
+        return this->shift * this->pop;
     }
 };
 
 struct B
 {
-    static float turn(U* that, float* updateVal )        //10
+    static float turn(U& that, float& updateVal )        //10
     {
-        if(that != nullptr && updateVal != nullptr)
+        std::cout << "U's pop value: " << that.pop << std::endl;
+        that.pop = updateVal;
+        std::cout << "U's pop updated value: " << that.pop << std::endl;
+
+        while( std::abs(that.pop - that.shift) > 0.001f )
         {
-            std::cout << "U's pop value: " << that->pop << std::endl;
-            that->pop = *updateVal;
-            std::cout << "U's pop updated value: " << that->pop << std::endl;
-
-            while( std::abs(that->pop - that->shift) > 0.001f )
-            {
-                /*
-                write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-                */
-                that->shift += ((that->pop) - (that->shift)) / 3 ;
-            }
-
-            std::cout << "U's shift updated value: " << that->shift << std::endl;
-            return that->shift * that->pop;
+            /*
+            write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+            */
+            that.shift += ((that.pop) - (that.shift)) / 3 ;
         }
-        return 0;
+
+        std::cout << "U's shift updated value: " << that.shift << std::endl;
+        return that.shift * that.pop;
     }
 };
         
@@ -111,11 +101,11 @@ struct B
 
 int main()
 {
-    T bitPop( 3, "y");                                             //6
-    T bitShift( 2, "e");                                             //6
+    T bitPop(3, "y");                                             //6
+    T bitShift(2, "e");                                             //6
 
     ComparisonCalc f;                                            //7
-    auto* smaller = f.compare( &bitPop, &bitShift);                              //8
+    auto* smaller = f.compare( bitPop, bitShift);                              //8
 
     if(smaller != nullptr)
     {
@@ -128,10 +118,10 @@ int main()
 
     U name3;
     float updatedValue = 5.f;
-    std::cout << "[static func] name3's multiplied values: " << B::turn(&name3, &updatedValue) << std::endl;                  //11
+    std::cout << "[static func] name3's multiplied values: " << B::turn(name3, updatedValue) << std::endl;                  //11
 
     U name4;
-    std::cout << "[member func] name4's multiplied values: " << name4.moving( &updatedValue ) << std::endl;
+    std::cout << "[member func] name4's multiplied values: " << name4.moving( updatedValue ) << std::endl;
 }
 
         
